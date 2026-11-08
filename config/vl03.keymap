@@ -5,26 +5,12 @@
 #define FUNC   1
 
 / {
-    combos {
-        compatible = "zmk,combos";
-
-        // Encoder switch (position 3) + the "0" key (position 10) toggles the
-        // Function layer. Because it is active on both layers, the same chord
-        // switches back to the Numpad layer again.
-        combo_func_toggle {
-            timeout-ms = <50>;
-            key-positions = <3 10>;
-            bindings = <&tog FUNC>;
-            layers = <NUMPAD FUNC>;
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
         // ------------------------------------------------------------------
         //  Layer 0 - Numpad
-        //   7   8   9   (mute / encoder switch)
+        //   7   8   9   (encoder switch = toggle Function layer)
         //   4   5   6
         //   1   2   3   0
         //  Encoder rotate = volume down / up
@@ -32,16 +18,16 @@
         numpad_layer {
             display-name = "Numpad";
             bindings = <
-                &kp N7  &kp N8  &kp N9  &kp C_MUTE
+                &kp N7  &kp N8  &kp N9  &tog FUNC
                 &kp N4  &kp N5  &kp N6
-                &kp N1  &kp N2  &kp N3  &studio_unlock
+                &kp N1  &kp N2  &kp N3  &kp N0
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP>;
         };
 
         // ------------------------------------------------------------------
         //  Layer 1 - Function (F13-F21)
-        //   F13  F14  F15  (mute / encoder switch)
+        //   F13  F14  F15  (encoder switch = toggle back to Numpad)
         //   F16  F17  F18
         //   F19  F20  F21  studio_unlock
         //  Encoder rotate = volume down / up
@@ -50,7 +36,7 @@
         function_layer {
             display-name = "Function";
             bindings = <
-                &kp F13  &kp F14  &kp F15  &kp C_MUTE
+                &kp F13  &kp F14  &kp F15  &tog FUNC
                 &kp F16  &kp F17  &kp F18
                 &kp F19  &kp F20  &kp F21  &studio_unlock
             >;
